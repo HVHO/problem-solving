@@ -12,14 +12,6 @@ vector<int> member;
 vector<int> fan;
 
 
-void iter_print(vector<int> &a) {
-
-    vector<int>::iterator it = a.begin();
-    while(it != a.end()) cout << *(it++);
-    cout << endl;
-
-}
-
 void nomarlize(vector<int> &a) {
 
     for(int i = 0; i < a.size(); i++) {
@@ -49,11 +41,10 @@ vector<int> multiply(vector<int> &a, vector<int> &b) {
 
     for(int i = 0; i < a.size(); i++)
         for(int j = 0; j < b.size(); j++) {
-            result[i + j] += a[i]*b[j];
+            result[i + j] += a[i] + b[j];
         }
 
-    iter_print(result);
-
+    
     nomarlize(result);
 
     return result;
@@ -144,7 +135,13 @@ vector<int> karatsuba (vector<int>& a, vector<int>& b) {
 
 }
 
+void iter_print(vector<int> &a) {
 
+    vector<int>::iterator it = a.begin();
+    while(it != a.end()) cout << *(it++);
+    cout << endl;
+
+}
 
 
 int main(void) {
