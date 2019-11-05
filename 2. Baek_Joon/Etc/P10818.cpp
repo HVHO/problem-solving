@@ -19,15 +19,22 @@ int Min;
 
 
 int main() {
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
     
-    scanf("%d",&N);
+    // scanf("%d",&N);
+    cin >> N;
 
     register int t;
-    scanf("%d",&t);
+    // scanf("%d",&t);
+    cin >> t;
     Max = Min = t;
     N--;
     for(register int i = 0; i < N; i++) {
-        scanf("%d", &t);
+        // scanf("%d", &t);
+        cin >> t;
         if(t > Max) Max = t;
         else if(t < Min) Min = t;
     }
