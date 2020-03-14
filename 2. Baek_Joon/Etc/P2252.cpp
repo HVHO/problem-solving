@@ -1,3 +1,6 @@
+// 백준 P2252 번 : 줄세우기
+// 위상정렬
+
 #include <stdio.h>
 
 #define mymax(a,b) ((a) > (b) ? (a) : (b))
