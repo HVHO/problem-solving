@@ -37,7 +37,6 @@ public:
         int sizea, sizeb;
         sizea = a.size();
         sizeb = b.size();
-        printf("%d%d",sizea,sizeb);
         
         int idxa = 0, idxb = 0;
         
