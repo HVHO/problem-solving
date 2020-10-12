@@ -2,7 +2,7 @@
 #include <vector>
 #include <queue>
 #include <iostream>
-#define ctn(c) (c - 0) // char to number
+#define ctn(c) (c - '0') // char to number
 
 using namespace std;
 
