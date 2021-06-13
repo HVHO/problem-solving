@@ -1,13 +1,13 @@
 #include <iostream>
-#define mymax(a,b) ((a) > (b) ? (a) : (b))
-#define mymin(a,b) ((a) < (b) ? (a) : (b))
-#define updateBit(x,a) ((x) | (1<<(a)))
-#define checkBit(x,a) ((x) & (1<<(a)))
+#include <stdlib.h>
+#define mymax(a, b) ((a) > (b) ? (a) : (b))
+#define mymin(a, b) ((a) < (b) ? (a) : (b))
+#define updateBit(x, a) ((x) | (1 << (a)))
+#define checkBit(x, a) ((x) & (1 << (a)))
 
 const int INF = 987654321;
 const long long MOD = (long long)1e9 + 7;
-const int NMAX = (int)5e6;
-
+const int NMAX = 5000000;
 
 using ui = unsigned int;
 using ll = long long;
@@ -15,71 +15,76 @@ using ull = unsigned long long;
 
 using namespace std;
 
-int N,L;
+int N, L;
 
+pair<int, int> deque[2 * NMAX]; // val, idx
+int f = 0, r = 0;
 
-pair<int,int> heap[NMAX + 1]; // val , idx
-int h_idx = 0;
-
-void push(int idx, int val) {
-    int t_idx = ++h_idx;
-    heap[t_idx] = {val, idx}; 
-
-    while(t_idx > 1 && heap[t_idx/2].first > heap[t_idx].first) {
-        auto t = heap[t_idx/2];
-        heap[t_idx/2] = heap[t_idx];
-        heap[t_idx] = t;
-        t_idx/=2;
-    }
+bool empty()
+{
+    return f >= r;
 }
 
-pair<int,int> top() {
-    return heap[1];
+void pop_front()
+{
+    f++;
 }
 
-void pop() {
-    heap[1] = heap[h_idx--];
-    int c = 1;
-    int n = 0, l , r;
-    while(c <= h_idx/2) {
-        n = c;
-        l = 2*c;
-        r = 2*c + 1;
-        if(heap[n].first > heap[l].first) n = l;
-        if(r <= h_idx && heap[n].first > heap[r].first) n = r;
-        if(c==n) break;
-        auto t = heap[n];
-        heap[n] = heap[c];
-        heap[c] = t;
-        c = n;
-    }
+void pop_rare()
+{
+    r--;
+}
+
+pair<int, int> front()
+{   
+    return deque[f + 1];
+}
+
+pair<int, int> rare()
+{
+    return deque[r];
+}
+
+void push_rare(pair<int, int> p)
+{
+    deque[++r] = p;
 }
 
 
 
-
-int sol() {
-    scanf("%d", &N);
-    scanf("%d", &L);
+int sol()
+{
+    cin >> N >> L;
     int input;
-    for(int i = 0; i < N; i++) {
+    for (int i = 0; i < N; i++)
+    {
         cin >> input;
-        push(i, input);
-        while(heap[1].second <= (i - L )) pop();
-
-
-        cout << heap[1].first << " ";
+        if (!empty() && front().second <= (i - L))
+        {
+            // cout << "pop front : " << front().first << endl;
+            pop_front();
+        }
+        while (!empty() && rare().first > input)
+        // while (!dq.empty() && dq.back().first > input)
+        {
+            // cout << "pop rare : " << rare().first << endl;
+            pop_rare();
+            // dq.pop_back();
+        }
+        push_rare({input, i});
+        // dq.push_back({input, i});
+        cout << front().first << " ";
+        // cout << dq.front().first << " ";
     }
 
     return 0;
 }
 
-
-
-int main() {
+int main()
+{
     cin.tie(NULL);
     cout.tie(NULL);
-    ios_base :: sync_with_stdio(false);   
+    ios_base ::sync_with_stdio(false);
     sol();
     return 0;
 }
