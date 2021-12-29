@@ -21,9 +21,15 @@ int N;
 int main(void) {
 
 	cin >> N;
+
 	vector<int> stair(N,0);
 	for(int i = 0; i < N; i++) 
 		cin >> stair[i];
+
+	if(N==1) {
+		printf("%d\n",stair[0]);
+		return 0;
+	}
 
 	vector<vector<int> > mem(N,vector<int>(2,0));
 
