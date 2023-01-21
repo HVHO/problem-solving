@@ -1,87 +1,78 @@
-// 백준 P11657 번 : 타임머신
-// bellman-ford
-#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <stdlib.h>
+#include <vector>
+#include <tuple>
 
-#define mymax(a,b) ((a) > (b) ? (a) : (b))
-#define mymin(a,b) ((a) < (b) ? (a) : (b))
+#define mymax(a, b) ((a) > (b) ? (a) : (b))
+#define mymin(a, b) ((a) < (b) ? (a) : (b))
+#define updateBit(x, a) ((x) | (1 << (a)))
+#define checkBit(x, a) ((x) & (1 << (a)))
 
-const int INF = 987654321;
-const int MOD = 1e7 + 9;
-const int NMAX = (int)501;
-const int MMAX = (int)6000;
-
+const long long INF = INT64_MAX/2;
+const long long MOD = (long long)1e9 + 7;
+const int NMAX = 100000;
 
 using ui = unsigned int;
 using ll = long long;
 using ull = unsigned long long;
 
+using namespace std;
 
-struct EDGE {
-  int s,e,w;  
-  EDGE(int s = 0, int e = 0, int w = 0) {
-      this->s = s;
-      this->e = e;
-      this->w = w;
-  };
-};
+int N, M;
 
-int N,M;
-EDGE edge[MMAX];
-int edgeCnt = 0;
-int d[NMAX];
+int main(void)
+{
+	ios_base ::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
+	cin >> N >> M;
 
-// bellman-ford
-void bd() {
+	vector<tuple<ll, ll, ll>> edges;
 
-    d[1] = 0;
-    bool flag;
-    for(int i = 0; i < N+10; i++) {
-        flag = false;
-        for(int j = 0; j < M; j++) {
-            EDGE c = edge[j];
-            if(d[c.s] != INF && (d[c.e] > d[c.s] + c.w)) {
-                d[c.e] = d[c.s] + c.w;
-                flag = true;
-            }
-        }
-    }
+	for (int i = 0; i < M; i++)
+	{
+		int s, e, c;
+		cin >> s >> e >> c;
+		edges.push_back(make_tuple(s - 1, e - 1, c));
+	}
 
-    if(flag) {
-        printf("-1\n");
-        return;
-    }
+	auto cost = vector<ll>(N, INF);
+	cost[0] = 0;
 
-    for(int i = 2; i <= N; i++)
-        if(d[i] != INF) printf("%d\n",d[i]);
-        else printf("-1\n");
+	for (int i = 0; i < (N - 1); i++)
+		for (int j = 0; j < M; j++)
+		{
 
-    return;
-}
+			auto [s, e, c] = edges[j];
 
-int sol() {
+			if (cost[s] == INF)
+				continue;
+			if (cost[e] > cost[s] + c)
+				cost[e] = cost[s] + c;
+		}
 
-    scanf("%d %d",&N,&M);
+	for (int j = 0; j < M; j++)
+	{
 
-    //init 
-    for(int i = 1; i <= N; i++) {
-       d[i] = INF; 
-    }
+		auto [s, e, c] = edges[j];
+		if (cost[s] == INF)
+				continue;
+		if (cost[e] > cost[s] + c)
+		{
+			cout << "-1";
+			return 0;
+		}
+	}
 
-    int st, ed, cost; 
-    for(int i = 0; i < M; i++) {
-        scanf("%d %d %d",&st,&ed,&cost);
-        edge[edgeCnt++] = EDGE(st,ed,cost);
-    }
+	for (int i = 1; i < N; i++)
+	{
+		if (cost[i] == INF)
+			cout << "-1" << endl;
+		else
+			cout << cost[i] << endl;
+	}
 
-    bd();
-
-    return 0;
-}
-
-
-int main() {
-    //printf("%d\n",sol());
-    sol();
-    return 0;
+	return 0;
 }
